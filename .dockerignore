@@ -1,0 +1,27 @@
+### Jetbraint ###
+.idea/
+*.iml
+
+### JS libs
+/node_modules
+package-lock.json
+npm-debug.log
+yarn-error.log
+
+### Laravel
+/public/hot
+/public/storage
+/storage/*.key
+/vendor
+.env
+.env.backup
+.phpunit.result.cache
+tests/
+
+### docker
+docker-compose.override.yml
+Homestead.json
+Homestead.yaml
+
+### visual studio
+/.vscode
