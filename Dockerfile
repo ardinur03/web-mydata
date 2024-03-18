@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install -y \
   libmcrypt-dev \
   openssl \
   unzip \
-  vim \
+  nano \
   zip \
   zlib1g-dev \
   libpng-dev \
@@ -42,7 +42,15 @@ RUN mkdir -p public/storage && \
 chmod -R 777 storage/* && \
 chmod -R 777 public/storage
 
-RUN composer install --no-interaction --optimize-autoloader --no-dev && \
+ENV DB_CONNECTION=pgsql
+ENV DB_HOST=pgsql
+ENV DB_PORT=5432
+ENV DB_DATABASE=postgres
+ENV DB_USERNAME=postgres
+ENV DB_PASSWORD=postgres
+
+RUN php -r "file_exists('.env') || copy('.env.example', '.env');" && \
+    composer install --no-interaction --optimize-autoloader --no-dev && \
     php artisan package:discover --ansi && \
     php artisan key:generate --ansi --force && \
     php artisan optimize
