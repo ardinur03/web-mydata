@@ -14,13 +14,14 @@ RUN apt-get update && apt-get install -y \
   zlib1g-dev \
   libpng-dev \
   libzip-dev && \
-  && docker-php-ext-install pdo pdo_pgsql
 rm -r /var/lib/apt/lists/*
 
 RUN pecl install mcrypt-1.0.6 && \
   docker-php-ext-install fileinfo exif pcntl bcmath gd && \
   docker-php-ext-enable mcrypt && \
   a2enmod rewrite
+
+RUN docker-php-ext-install pdo pdo_pgsql
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer
 
@@ -41,8 +42,7 @@ RUN mkdir -p public/storage && \
 chmod -R 777 storage/* && \
 chmod -R 777 public/storage
 
-RUN php -r "file_exists('.env') || copy('.env.example', '.env');" && \
-    composer install --no-interaction --optimize-autoloader --no-dev && \
+RUN composer install --no-interaction --optimize-autoloader --no-dev && \
     php artisan package:discover --ansi && \
     php artisan key:generate --ansi --force && \
     php artisan optimize
